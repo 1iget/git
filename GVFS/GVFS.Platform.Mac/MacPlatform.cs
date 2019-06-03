@@ -2,6 +2,7 @@
 using GVFS.Common.FileSystem;
 using GVFS.Common.Tracing;
 using GVFS.Platform.POSIX;
+using System;
 using System.IO;
 
 namespace GVFS.Platform.Mac
@@ -77,6 +78,11 @@ namespace GVFS.Platform.Mac
             public override string GVFSBinDirectoryName
             {
                 get { return "vfsforgit"; }
+            }
+
+            public override StringComparison PathComparison
+            {
+                get { return StringComparison.OrdinalIgnoreCase; }
             }
         }
     }

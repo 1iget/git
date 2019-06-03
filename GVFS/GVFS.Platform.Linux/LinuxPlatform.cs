@@ -2,6 +2,7 @@ using GVFS.Common;
 using GVFS.Common.FileSystem;
 using GVFS.Common.Tracing;
 using GVFS.Platform.POSIX;
+using System;
 using System.Collections.Generic;
 using System.IO;
 
@@ -88,6 +89,11 @@ namespace GVFS.Platform.Linux
             public override string GVFSBinDirectoryName
             {
                 get { return Path.GetFileName(this.GVFSBinDirectoryPath); }
+            }
+
+            public override StringComparison PathComparison
+            {
+                get { return StringComparison.Ordinal; }
             }
         }
     }

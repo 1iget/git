@@ -194,6 +194,11 @@ namespace GVFS.UnitTests.Mock.Common
             {
                 get { return "MockGVFS" + this.ExecutableExtension; }
             }
+
+            public override StringComparison PathComparison
+            {
+                get { return StringComparison.Ordinal; }
+            }
         }
     }
 }

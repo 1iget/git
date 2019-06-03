@@ -102,6 +102,8 @@ namespace GVFS.Common
 
             public abstract string GVFSExecutableName { get; }
 
+            public abstract StringComparison PathComparison { get; }
+
             public string GVFSHooksExecutableName
             {
                 get { return "GVFS.Hooks" + this.ExecutableExtension; }

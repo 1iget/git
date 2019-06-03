@@ -440,6 +440,11 @@ namespace GVFS.Platform.Windows
             {
                 get { return "GVFS" + this.ExecutableExtension; }
             }
+
+            public override StringComparison PathComparison
+            {
+                get { return StringComparison.OrdinalIgnoreCase; }
+            }
         }
     }
 }
