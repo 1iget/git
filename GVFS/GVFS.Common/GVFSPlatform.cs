@@ -102,7 +102,27 @@ namespace GVFS.Common
 
             public abstract string GVFSExecutableName { get; }
 
-            public abstract StringComparison PathComparison { get; }
+            public abstract bool CaseSensitiveFileSystem { get; }
+
+            public StringComparison PathComparison
+            {
+                get
+                {
+                    return this.CaseSensitiveFileSystem ?
+                        StringComparison.Ordinal :
+                        StringComparison.OrdinalIgnoreCase;
+                }
+            }
+
+            public StringComparer PathComparer
+            {
+                get
+                {
+                    return this.CaseSensitiveFileSystem ?
+                        StringComparer.Ordinal :
+                        StringComparer.OrdinalIgnoreCase;
+                }
+            }
 
             public string GVFSHooksExecutableName
             {

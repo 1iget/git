@@ -151,7 +151,7 @@ namespace MirrorProvider
             FileSystemInfo fileSystemInfo = 
                 dirInfo
                 .GetFileSystemInfos()
-                .FirstOrDefault(fsInfo => fsInfo.Name.Equals(fileName, StringComparison.OrdinalIgnoreCase));
+                .FirstOrDefault(fsInfo => fsInfo.Name.Equals(fileName, GVFSPlatform.Instance.Constants.PathComparison));
 
             if (fileSystemInfo == null)
             {

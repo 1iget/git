@@ -91,10 +91,7 @@ namespace GVFS.Platform.Linux
                 get { return Path.GetFileName(this.GVFSBinDirectoryPath); }
             }
 
-            public override StringComparison PathComparison
-            {
-                get { return StringComparison.Ordinal; }
-            }
+            public override bool CaseSensitiveFileSystem => true;
         }
     }
 }

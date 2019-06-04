@@ -1,4 +1,5 @@
-﻿using GVFS.Common.Git;
+﻿using GVFS.Common;
+using GVFS.Common.Git;
 using GVFS.Common.Tracing;
 using System;
 using System.Collections.Concurrent;
@@ -16,7 +17,7 @@ namespace GVFS.Common.Prefetch.Git
         private HashSet<string> exactFileList;
         private List<string> patternList;
         private List<string> folderList;
-        private HashSet<string> filesAdded = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+        private HashSet<string> filesAdded = new HashSet<string>(GVFSPlatform.Instance.Constants.PathComparer);
 
         private HashSet<DiffTreeResult> stagedDirectoryOperations = new HashSet<DiffTreeResult>(new DiffTreeByNameComparer());
         private HashSet<string> stagedFileDeletes = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
@@ -32,7 +33,7 @@ namespace GVFS.Common.Prefetch.Git
         public DiffHelper(ITracer tracer, Enlistment enlistment, GitProcess git, IEnumerable<string> fileList, IEnumerable<string> folderList, bool includeSymLinks)
         {
             this.tracer = tracer;
-            this.exactFileList = new HashSet<string>(fileList.Where(x => !x.StartsWith("*")), StringComparer.OrdinalIgnoreCase);
+            this.exactFileList = new HashSet<string>(fileList.Where(x => !x.StartsWith("*")), GVFSPlatform.Instance.Constants.PathComparer);
             this.patternList = fileList.Where(x => x.StartsWith("*")).ToList();
             this.folderList = new List<string>(folderList);
             this.enlistment = enlistment;
@@ -41,7 +42,7 @@ namespace GVFS.Common.Prefetch.Git
 
             this.DirectoryOperations = new ConcurrentQueue<DiffTreeResult>();
             this.FileDeleteOperations = new ConcurrentQueue<string>();
-            this.FileAddOperations = new ConcurrentDictionary<string, HashSet<PathWithMode>>(StringComparer.OrdinalIgnoreCase);
+            this.FileAddOperations = new ConcurrentDictionary<string, HashSet<PathWithMode>>(GVFSPlatform.Instance.Constants.PathComparer);
             this.RequiredBlobs = new BlockingCollection<string>();
         }
 
@@ -173,7 +174,7 @@ namespace GVFS.Common.Prefetch.Git
                 // Append trailing slash terminator to avoid matches with directory prefixes (Eg. \GVFS and \GVFS.Common)
                 if (result.Operation == DiffTreeResult.Operations.Delete)
                 {
-                    if (deletedPaths.Any(path => result.TargetPath.StartsWith(path, StringComparison.OrdinalIgnoreCase)))
+                    if (deletedPaths.Any(path => result.TargetPath.StartsWith(path, GVFSPlatform.Instance.Constants.PathComparison)))
                     {
                         continue;
                     }
@@ -187,7 +188,7 @@ namespace GVFS.Common.Prefetch.Git
             foreach (string filePath in this.stagedFileDeletes)
             {
                 string pathWithSlash = filePath;
-                if (deletedPaths.Any(path => pathWithSlash.StartsWith(path, StringComparison.OrdinalIgnoreCase)))
+                if (deletedPaths.Any(path => pathWithSlash.StartsWith(path, GVFSPlatform.Instance.Constants.PathComparison)))
                 {
                     continue;
                 }
@@ -335,12 +336,12 @@ namespace GVFS.Common.Prefetch.Git
             }
 
             if (this.exactFileList.Contains(blobAdd.TargetPath) ||
-                this.patternList.Any(path => blobAdd.TargetPath.EndsWith(path.Substring(1), StringComparison.OrdinalIgnoreCase)))
+                this.patternList.Any(path => blobAdd.TargetPath.EndsWith(path.Substring(1), GVFSPlatform.Instance.Constants.PathComparison)))
             {
                 return true;
             }
 
-            if (this.folderList.Any(path => blobAdd.TargetPath.StartsWith(path, StringComparison.OrdinalIgnoreCase)))
+            if (this.folderList.Any(path => blobAdd.TargetPath.StartsWith(path, GVFSPlatform.Instance.Constants.PathComparison)))
             {
                 return true;
             }
@@ -409,7 +410,7 @@ namespace GVFS.Common.Prefetch.Git
                 {
                     if (y.TargetPath != null)
                     {
-                        return x.TargetPath.Equals(y.TargetPath, StringComparison.OrdinalIgnoreCase);
+                        return x.TargetPath.Equals(y.TargetPath, GVFSPlatform.Instance.Constants.PathComparison);
                     }
 
                     return false;
@@ -424,7 +425,7 @@ namespace GVFS.Common.Prefetch.Git
             public int GetHashCode(DiffTreeResult obj)
             {
                 return obj.TargetPath != null ?
-                    StringComparer.OrdinalIgnoreCase.GetHashCode(obj.TargetPath) : 0;
+                    GVFSPlatform.Instance.Constants.PathComparer.GetHashCode(obj.TargetPath) : 0;
             }
         }
     }

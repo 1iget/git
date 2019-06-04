@@ -119,7 +119,7 @@ namespace GVFS.Common
                     fileSystem: this.fileSystem,
                     output: out config,
                     error: out error,
-                    keyComparer: StringComparer.OrdinalIgnoreCase))
+                    keyComparer: GVFSPlatform.Instance.Constants.PathComparer))
                 {
                     this.allSettings = config;
                     return true;

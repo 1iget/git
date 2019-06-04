@@ -1,4 +1,5 @@
-﻿using System;
+﻿using GVFS.Common;
+using System;
 
 namespace GVFS.Common.Prefetch.Git
 {
@@ -22,12 +23,12 @@ namespace GVFS.Common.Prefetch.Git
                 return false;
             }
 
-            return x.Path.Equals(this.Path, StringComparison.OrdinalIgnoreCase);
+            return x.Path.Equals(this.Path, GVFSPlatform.Instance.Constants.PathComparison);
         }
 
         public override int GetHashCode()
         {
-            return StringComparer.OrdinalIgnoreCase.GetHashCode(this.Path);
+            return GVFSPlatform.Instance.Constants.PathComparer.GetHashCode(this.Path);
         }
     }
 }

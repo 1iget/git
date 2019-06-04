@@ -242,7 +242,7 @@ namespace MirrorProvider.Linux
                 return false;
             }
 
-            if (symLinkTarget.StartsWith(this.Enlistment.MirrorRoot, StringComparison.OrdinalIgnoreCase))
+            if (symLinkTarget.StartsWith(this.Enlistment.MirrorRoot, StringComparison.Ordinal))
             {
                 // Link target is an absolute path inside the MirrorRoot.
                 // The target needs to be adjusted to point inside the src root
