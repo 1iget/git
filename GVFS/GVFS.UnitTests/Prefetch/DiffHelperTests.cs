@@ -1,4 +1,5 @@
-﻿using GVFS.Common.Git;
+﻿using GVFS.Common;
+using GVFS.Common.Git;
 using GVFS.Common.Prefetch.Git;
 using GVFS.Tests;
 using GVFS.Tests.Should;
@@ -104,6 +105,11 @@ namespace GVFS.UnitTests.Prefetch
         [TestCase]
         public void ParsesCaseChangesAsAdds()
         {
+            if (GVFSPlatform.Instance.Constants.CaseSensitiveFileSystem)
+            {
+                return;
+            }
+
             MockTracer tracer = new MockTracer();
             DiffHelper diffBackwards = new DiffHelper(tracer, new Mock.Common.MockGVFSEnlistment(), new List<string>(), new List<string>(), includeSymLinks: this.IncludeSymLinks);
             diffBackwards.ParseDiffFile(GetDataPath("caseChange.txt"), "xx:\\fakeRepo");
