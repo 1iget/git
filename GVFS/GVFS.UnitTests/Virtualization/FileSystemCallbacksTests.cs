@@ -29,11 +29,15 @@ namespace GVFS.UnitTests.Virtualization
         public void IsPathInsideDotGitIsTrueForDotGitPath()
         {
             FileSystemCallbacks.IsPathInsideDotGit(@".git" + Path.DirectorySeparatorChar).ShouldEqual(true);
-            FileSystemCallbacks.IsPathInsideDotGit(@".GIT" + Path.DirectorySeparatorChar).ShouldEqual(true);
             FileSystemCallbacks.IsPathInsideDotGit(Path.Combine(".git", "test_file.txt")).ShouldEqual(true);
-            FileSystemCallbacks.IsPathInsideDotGit(Path.Combine(".GIT", "test_file.txt")).ShouldEqual(true);
             FileSystemCallbacks.IsPathInsideDotGit(Path.Combine(".git", "test_folder", "test_file.txt")).ShouldEqual(true);
-            FileSystemCallbacks.IsPathInsideDotGit(Path.Combine(".GIT", "test_folder", "test_file.txt")).ShouldEqual(true);
+
+            if (!GVFSPlatform.Instance.Constants.CaseSensitiveFileSystem)
+            {
+                FileSystemCallbacks.IsPathInsideDotGit(@".GIT" + Path.DirectorySeparatorChar).ShouldEqual(true);
+                FileSystemCallbacks.IsPathInsideDotGit(Path.Combine(".GIT", "test_file.txt")).ShouldEqual(true);
+                FileSystemCallbacks.IsPathInsideDotGit(Path.Combine(".GIT", "test_folder", "test_file.txt")).ShouldEqual(true);
+            }
         }
 
         [TestCase]
