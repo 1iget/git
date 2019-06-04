@@ -11,6 +11,8 @@ namespace MirrorProvider.Linux
     {
         private VirtualizationInstance virtualizationInstance = new VirtualizationInstance();
 
+        protected override StringComparison PathComparison => StringComparison.Ordinal;
+
         public override bool TryConvertVirtualizationRoot(string directory, out string error)
         {
             error = null;
